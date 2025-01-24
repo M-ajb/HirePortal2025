@@ -17,6 +17,8 @@ public class UsersType {
     @OneToMany(targetEntity = Users.class, mappedBy = "userTypeId" ,cascade = CascadeType.ALL)
     private List<Users> users;
 
+
+
     public UsersType() {
     }
 

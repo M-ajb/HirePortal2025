@@ -4,25 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
-/**
- * De `Users`-entiteit vertegenwoordigt een gebruiker in het systeem.
- * Het bevat essentiële gebruikersinformatie, zoals e-mailadres, wachtwoord,
- * activatiestatus, registratiedatum en de gekoppelde gebruikersrol.
- *
- * Deze klasse wordt gebruikt om gebruikersgegevens te beheren en biedt ondersteuning
- * voor het koppelen van gebruikers aan verschillende rollen via een relatie met de
- * `UsersType`-entiteit.
- *
- * Belangrijk:
- * - `email` moet uniek zijn.
- * - `password` mag niet leeg zijn.
- * - De `registrationDate` volgt het patroon "dd-MM-yyyy".
- *
- * Annotaties:
- * - `@Entity` en `@Table`: Maken deze klasse een JPA-entiteit gekoppeld aan de `users`-tabel.
- * - `@Id` en `@GeneratedValue`: Gebruikt voor de primaire sleutel.
- * - `@ManyToOne`: Voor de relatie met de `UsersType`-entiteit.
- */
+
 @Entity
 @Table(name= "users")
 public class Users {
@@ -45,6 +27,8 @@ public class Users {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userTypeId", referencedColumnName = "userTypeId")
     private UsersType userTypeId;
+
+
 
 
     public Users() {
