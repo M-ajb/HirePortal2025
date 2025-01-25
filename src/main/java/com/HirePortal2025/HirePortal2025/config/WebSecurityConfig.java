@@ -6,26 +6,25 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-/**
- * Configuratieklasse voor applicatiebeveiliging.
- * Stelt toegangsregels in, definieert openbare URL-patronen
- * en configureert authenticatievereisten voor beveiligde resources.
- */
+
 @Configuration
 public class WebSecurityConfig {
 
 
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomAuthenticationSuccesHandler customAuthenticationSuccesHandler;
 
     @Autowired
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthenticationSuccesHandler customAuthenticationSuccesHandler) {
         this.customUserDetailsService = customUserDetailsService;
+        this.customAuthenticationSuccesHandler = customAuthenticationSuccesHandler;
     }
 
 
@@ -45,10 +44,7 @@ public class WebSecurityConfig {
             "/fonts**", "/favicon.ico", "/resources/**", "/error"};
 
 
-    /**
-     * Configureert het beveiligingsfilter om openbare URLs zonder authenticatie toe te staan
-     * en overige verzoeken te beveiligen.
-     */
+
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
@@ -58,6 +54,15 @@ public class WebSecurityConfig {
             auth.requestMatchers(publicUrl).permitAll();
             auth.anyRequest().authenticated();
         });
+
+        http.formLogin(form-> form.loginPage("/login").permitAll()
+                        .successHandler(customAuthenticationSuccesHandler))
+                .logout(logout->{
+                    logout.logoutUrl("/logout");
+                    logout.logoutSuccessUrl("/");
+               }).cors(Customizer.withDefaults())
+                .csrf(csrf-> csrf.disable());
+
         return http.build();
 
     }
