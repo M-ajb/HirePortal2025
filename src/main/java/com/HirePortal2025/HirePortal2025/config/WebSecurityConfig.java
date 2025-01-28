@@ -19,12 +19,13 @@ public class WebSecurityConfig {
 
 
     private final CustomUserDetailsService customUserDetailsService;
-    private final CustomAuthenticationSuccesHandler customAuthenticationSuccesHandler;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+
 
     @Autowired
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthenticationSuccesHandler customAuthenticationSuccesHandler) {
+    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
         this.customUserDetailsService = customUserDetailsService;
-        this.customAuthenticationSuccesHandler = customAuthenticationSuccesHandler;
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
     }
 
 
@@ -56,7 +57,7 @@ public class WebSecurityConfig {
         });
 
         http.formLogin(form-> form.loginPage("/login").permitAll()
-                        .successHandler(customAuthenticationSuccesHandler))
+                        .successHandler(customAuthenticationSuccessHandler))
                 .logout(logout->{
                     logout.logoutUrl("/logout");
                     logout.logoutSuccessUrl("/");
