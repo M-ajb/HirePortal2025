@@ -158,6 +158,10 @@ public class JobSeekerProfile {
         return "/photos/candidate/" + userAccountId + "/" + profilePhoto;
     }
 
+
+
+
+
     @Override
     public String toString() {
         return "JobSeekerProfile{" +
