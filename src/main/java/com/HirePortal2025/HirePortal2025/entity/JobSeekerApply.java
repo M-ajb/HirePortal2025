@@ -32,6 +32,8 @@ public class JobSeekerApply implements Serializable {
     private String coverLetter;
 
 
+
+
     public JobSeekerApply() {
     }
 
