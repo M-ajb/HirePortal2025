@@ -13,7 +13,23 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-
+/**
+ * The `WebSecurityConfig` class configures the security settings for the application.
+ * It sets up authentication, authorization, and other security-related configurations.
+ *
+ * Fields:
+ * - `customUserDetailsService`: Service for loading user-specific data.
+ * - `customAuthenticationSuccessHandler`: Handler for successful authentication events.
+ * - `publicUrl`: Array of URLs that are publicly accessible without authentication.
+ *
+ * Purpose:
+ * - To configure security settings such as authentication providers, password encoding, and security filter chains.
+ *
+ * Key Functionalities:
+ * - `securityFilterChain(HttpSecurity http)`: Configures the security filter chain, including authentication, authorization, login, and logout settings.
+ * - `authenticationProvider()`: Sets up the authentication provider with a password encoder and user details service.
+ * - `passwordEncoder()`: Provides a password encoder bean for encoding passwords.
+ */
 @Configuration
 public class WebSecurityConfig {
 
@@ -22,6 +38,12 @@ public class WebSecurityConfig {
     private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
 
+    /**
+     * Constructs a new `WebSecurityConfig` with the specified user details service and authentication success handler.
+     *
+     * @param customUserDetailsService the service for loading user-specific data
+     * @param customAuthenticationSuccessHandler the handler for successful authentication events
+     */
     @Autowired
     public WebSecurityConfig(CustomUserDetailsService customUserDetailsService, CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler) {
         this.customUserDetailsService = customUserDetailsService;
@@ -65,7 +87,6 @@ public class WebSecurityConfig {
                 .csrf(csrf-> csrf.disable());
 
         return http.build();
-
     }
 
 
@@ -77,8 +98,6 @@ public class WebSecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(customUserDetailsService);
         return authenticationProvider;
-
-
     }
 
 

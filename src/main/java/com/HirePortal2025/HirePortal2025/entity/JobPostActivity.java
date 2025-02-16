@@ -6,6 +6,29 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
+/**
+ * The `JobPostActivity` class represents a job post activity in the HirePortal2025 application.
+ * It contains information about the job post, including the job details, the user who posted it,
+ * the job location, the company, and other relevant details.
+ *
+ * Fields:
+ * - `jobPostId`: The unique identifier for the job post.
+ * - `postById`: The user who posted the job, represented by a `Users` object.
+ * - `jobLocationId`: The location of the job, represented by a `JobLocation` object.
+ * - `jobCompanyId`: The company offering the job, represented by a `JobCompany` object.
+ * - `isActive`: A transient field indicating whether the job post is active.
+ * - `isSaved`: A transient field indicating whether the job post is saved by the user.
+ * - `descriptionOfJob`: A detailed description of the job.
+ * - `jobType`: The type of job (e.g., full-time, part-time).
+ * - `salary`: The salary offered for the job.
+ * - `remote`: Indicates if the job is remote.
+ * - `postedDate`: The date when the job was posted.
+ * - `jobTitle`: The title of the job.
+ *
+ * Key Functionalities:
+ * - Provides getter and setter methods for all fields to access and modify the job post details.
+ * - `toString` method to provide a string representation of the job post activity.
+ */
 @Entity
 public class JobPostActivity {
 
@@ -49,6 +72,22 @@ public class JobPostActivity {
     }
 
 
+    /**
+     * Constructs a new `JobPostActivity` object with the specified details.
+     *
+     * @param jobPostId The unique identifier for the job post.
+     * @param postById The user who posted the job, represented by a `Users` object.
+     * @param jobLocationId The location of the job, represented by a `JobLocation` object.
+     * @param jobCompanyId The company offering the job, represented by a `JobCompany` object.
+     * @param isActive A transient field indicating whether the job post is active.
+     * @param isSaved A transient field indicating whether the job post is saved by the user.
+     * @param descriptionOfJob A detailed description of the job.
+     * @param jobType The type of job (e.g., full-time, part-time).
+     * @param salary The salary offered for the job.
+     * @param remote Indicates if the job is remote.
+     * @param postedDate The date when the job was posted.
+     * @param jobTitle The title of the job.
+     */
     public JobPostActivity(Integer jobPostId, Users postById, JobLocation jobLocationId, JobCompany jobCompanyId, Boolean isActive, Boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
         this.jobPostId = jobPostId;
         this.postById = postById;

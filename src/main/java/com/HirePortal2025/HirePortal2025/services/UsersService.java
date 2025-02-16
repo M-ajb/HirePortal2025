@@ -19,6 +19,27 @@ import java.util.Date;
 import java.util.Optional;
 
 
+/**
+ * The `UsersService` class provides services related to user management, including
+ * adding new users, retrieving user information by email, and obtaining the current
+ * authenticated user's profile and details.
+ *
+ * Fields:
+ * - `usersRepository`: Repository for performing CRUD operations on `Users` entities.
+ * - `jobSeekerProfileRepository`: Repository for performing CRUD operations on `JobSeekerProfile` entities.
+ * - `recruiterProfileRepository`: Repository for performing CRUD operations on `RecruiterProfile` entities.
+ * - `passwordEncoder`: Encoder for encoding user passwords.
+ *
+ * Key Functionalities:
+ * - `addNew(Users users)`: Adds a new user, sets the user as active, sets the registration date,
+ *   encodes the user's password, and saves the user. Depending on the user type, it also saves
+ *   a corresponding `RecruiterProfile` or `JobSeekerProfile`.
+ * - `getUserByEmail(String email)`: Retrieves a user by their email address.
+ * - `getCurrentUserProfile()`: Retrieves the profile of the currently authenticated user, either
+ *   a `RecruiterProfile` or `JobSeekerProfile`, based on the user's role.
+ * - `getCurrentUser()`: Retrieves the currently authenticated user.
+ * - `findByEmail(String currentUsername)`: Finds a user by their email address.
+ */
 @Service
 public class UsersService {
 
@@ -27,6 +48,15 @@ public class UsersService {
     private final RecruiterProfileRepository recruiterProfileRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    /**
+         * Constructs a new `UsersService` with the specified repositories and password encoder.
+         *
+         * @param usersRepository the repository for performing CRUD operations on `Users` entities
+         * @param jobSeekerProfileRepository the repository for performing CRUD operations on `JobSeekerProfile` entities
+         * @param recruiterProfileRepository the repository for performing CRUD operations on `RecruiterProfile` entities
+         * @param passwordEncoder the encoder for encoding user passwords
+         */
     @Autowired
     public UsersService(UsersRepository usersRepository, JobSeekerProfileRepository jobSeekerProfileRepository, RecruiterProfileRepository recruiterProfileRepository,PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
@@ -65,7 +95,7 @@ public class UsersService {
 
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             String username = authentication.getName();
-            Users users = usersRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Could not found " + "user"));
+            Users users = usersRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Could not find " + "user"));
             int userId = users.getUserId();
 
             if(authentication.getAuthorities().contains(new SimpleGrantedAuthority("Recruiter"))){
@@ -85,7 +115,7 @@ public class UsersService {
 
       if(!(authentication instanceof AnonymousAuthenticationToken)){
          String username = authentication.getName();
-          Users user = usersRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Could not found " + "user"));
+          Users user = usersRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Could not find " + "user"));
 
           return user;
       }

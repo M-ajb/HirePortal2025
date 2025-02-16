@@ -9,6 +9,23 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+/**
+ * The `FileUploadUtil` class provides utility methods for handling file uploads.
+ * It includes methods to save files to a specified directory.
+ *
+ * Purpose:
+ * - To provide a utility method for saving uploaded files to a specified directory.
+ *
+ * Key Functionalities:
+ * - `saveFile(String uploadDir, String filename, MultipartFile multipartFile)`:
+ *   Saves the uploaded file to the specified directory with the given filename.
+ *   - Parameters:
+ *     - `uploadDir`: The directory where the file will be saved.
+ *     - `filename`: The name of the file to be saved.
+ *     - `multipartFile`: The uploaded file to be saved.
+ *   - Throws:
+ *     - `IOException`: If an I/O error occurs during file saving.
+ */
 public class FileUploadUtil {
 
     public static void saveFile(String uploadDir, String filename , MultipartFile multipartFile) throws IOException {

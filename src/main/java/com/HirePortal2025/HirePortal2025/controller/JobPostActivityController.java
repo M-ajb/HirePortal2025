@@ -24,7 +24,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-
+/**
+ * The `JobPostActivityController` class handles HTTP requests related to job post activities.
+ * It provides endpoints for searching, adding, editing, and globally searching job posts.
+ *
+ * Fields:
+ * - `usersService`: Service for managing user data.
+ * - `jobPostActivityService`: Service for managing job post activity data.
+ * - `jobSeekerApplyService`: Service for managing job seeker applications.
+ * - `jobSeekerSaveService`: Service for managing saved job posts.
+ *
+ * Purpose:
+ * - To provide endpoints for job seekers and recruiters to interact with job posts.
+ *
+ * Key Functionalities:
+ * - `searchJobs(Model model, String job, String location, String partTime, String fullTime, String freelance, String remoteOnly, String officeOnly, String partialRemote, boolean today, boolean days7, boolean days30)`: Handles GET requests for searching job posts on the dashboard.
+ * - `addJobs(Model model)`: Handles GET requests for displaying the add job post form.
+ * - `addNew(JobPostActivity jobPostActivity, Model model)`: Handles POST requests for adding a new job post.
+ * - `editJob(int id, Model model)`: Handles POST requests for editing an existing job post.
+ * - `globalSearch(Model model, String job, String location, String partTime, String fullTime, String freelance, String remoteOnly, String officeOnly, String partialRemote, boolean today, boolean days7, boolean days30)`: Handles GET requests for globally searching job posts.
+ */
 @Controller
 public class JobPostActivityController {
 
@@ -33,6 +52,14 @@ public class JobPostActivityController {
     private final JobSeekerApplyService jobSeekerApplyService;
     private final JobSeekerSaveService jobSeekerSaveService;
 
+    /**
+     * Constructs a new `JobPostActivityController` with the specified services.
+     *
+     * @param usersService the service for managing user data
+     * @param jobPostActivityService the service for managing job post activity data
+     * @param jobSeekerApplyService the service for managing job seeker applications
+     * @param jobSeekerSaveService the service for managing saved job posts
+     */
     @Autowired
     public JobPostActivityController(UsersService usersService, JobPostActivityService jobPostActivityService, JobSeekerApplyService jobSeekerApplyService, JobSeekerSaveService jobSeekerSaveService) {
         this.usersService = usersService;
@@ -41,7 +68,26 @@ public class JobPostActivityController {
         this.jobSeekerSaveService = jobSeekerSaveService;
     }
 
-
+    /**
+     * Handles job search functionality for the dashboard.
+     * Retrieves job listings based on filters such as job type, location,
+     * work mode, and posting date, and adjusts the results for job seekers
+     * and recruiters accordingly.
+     *
+     * @param model the Model object to pass attributes to the view
+     * @param job the job title filter
+     * @param location the location filter
+     * @param partTime filter for part-time jobs
+     * @param fullTime filter for full-time jobs
+     * @param freelance filter for freelance jobs
+     * @param remoteOnly filter for remote jobs
+     * @param officeOnly filter for office-based jobs
+     * @param partialRemote filter for hybrid jobs
+     * @param today filter for jobs posted today
+     * @param days7 filter for jobs posted in the last 7 days
+     * @param days30 filter for jobs posted in the last 30 days
+     * @return the name of the view to be rendered
+     */
     @GetMapping("/dashboard/")
     public  String searchJobs(Model model,
                               @RequestParam(value = "job", required = false) String job,
@@ -88,7 +134,6 @@ public class JobPostActivityController {
         }else{
             dateSearchFlag = false;
         }
-
 
         if(partTime == null && fullTime == null && freelance == null){
             partTime = "Part-Time";
@@ -194,6 +239,7 @@ public class JobPostActivityController {
         return "redirect:/dashboard/";
     }
 
+
     @PostMapping("dashboard/edit/{id}")
     public String editJob(@PathVariable("id") int id, Model model){
 
@@ -203,6 +249,28 @@ public class JobPostActivityController {
         return "add-jobs";
     }
 
+
+
+    /**
+     * Handles global job search functionality.
+     * Retrieves job listings based on filters such as job type, location,
+     * work mode, and posting date. Returns job listings for all users,
+     * regardless of authentication status.
+     *
+     * @param model the Model object to pass attributes to the view
+     * @param job the job title filter
+     * @param location the location filter
+     * @param partTime filter for part-time jobs
+     * @param fullTime filter for full-time jobs
+     * @param freelance filter for freelance jobs
+     * @param remoteOnly filter for remote jobs
+     * @param officeOnly filter for office-based jobs
+     * @param partialRemote filter for hybrid jobs
+     * @param today filter for jobs posted today
+     * @param days7 filter for jobs posted in the last 7 days
+     * @param days30 filter for jobs posted in the last 30 days
+     * @return the name of the view to be rendered
+     */
     @GetMapping("/global-search/")
     public String globalSearch(Model model,
                                @RequestParam(value = "job", required = false) String job,

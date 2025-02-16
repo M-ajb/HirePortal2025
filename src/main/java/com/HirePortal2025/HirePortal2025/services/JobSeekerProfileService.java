@@ -13,12 +13,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
+/**
+ * The `JobSeekerProfileService` class provides services related to job seeker profile management.
+ * It includes methods to retrieve, add, and get the current authenticated job seeker's profile.
+ *
+ * Fields:
+ * - `jobSeekerProfileRepository`: Repository for performing CRUD operations on `JobSeekerProfile` entities.
+ * - `usersRepository`: Repository for performing CRUD operations on `Users` entities.
+ *
+ * Key Functionalities:
+ * - `getOne(Integer id)`: Retrieves a job seeker profile by its ID.
+ * - `addNew(JobSeekerProfile jobSeekerProfile)`: Adds a new job seeker profile.
+ * - `getCurrentSeekerProfile()`: Retrieves the profile of the currently authenticated job seeker.
+ */
 @Service
 public class JobSeekerProfileService {
 
     private final JobSeekerProfileRepository jobSeekerProfileRepository;
     private final UsersRepository usersRepository;
 
+    /**
+     * Constructs a new `JobSeekerProfileService` with the specified repositories.
+     *
+     * @param jobSeekerProfileRepository the repository for performing CRUD operations on `JobSeekerProfile` entities
+     * @param usersRepository the repository for performing CRUD operations on `Users` entities
+     */
     @Autowired
     public JobSeekerProfileService(JobSeekerProfileRepository jobSeekerProfileRepository, UsersRepository usersRepository) {
         this.jobSeekerProfileRepository = jobSeekerProfileRepository;

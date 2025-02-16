@@ -5,6 +5,25 @@ import jakarta.validation.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
+/**
+ * Represents a user entity in the database.
+ * This class is mapped to the "users" table in the database.
+ * It contains information about the user such as email, password,
+ * active status, registration date, and user type.
+ *
+ * Fields:
+ * - userId: The unique identifier for the user.
+ * - email: The email address of the user, which must be unique.
+ * - password: The password for the user's account.
+ * - isActive: Indicates whether the user's account is active.
+ * - registrationDate: The date when the user registered.
+ * - userTypeId: The type of user, represented by a foreign key to the UsersType entity.
+ *
+ * Key Functionalities:
+ * - Getters and setters for all fields.
+ * - Default constructor and parameterized constructor.
+ * - toString method to provide a string representation of the user entity.
+ */
 @Entity
 @Table(name= "users")
 public class Users {
@@ -29,12 +48,19 @@ public class Users {
     private UsersType userTypeId;
 
 
-
-
     public Users() {
     }
 
-
+/**
+ * Constructs a new Users object with the specified details.
+ *
+ * @param userId the unique identifier for the user
+ * @param email the email address of the user, which must be unique
+ * @param password the password for the user's account
+ * @param isActive indicates whether the user's account is active
+ * @param registrationDate the date when the user registered
+ * @param userTypeId the type of user, represented by a foreign key to the UsersType entity
+ */
     public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
         this.userId = userId;
         this.email = email;

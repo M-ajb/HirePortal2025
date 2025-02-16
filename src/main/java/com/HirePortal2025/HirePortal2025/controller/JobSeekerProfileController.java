@@ -29,6 +29,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * The `JobSeekerProfileController` class handles HTTP requests related to job seeker profiles.
+ *
+ * Fields:
+ * - `jobSeekerProfileService`: Service for managing job seeker profile data.
+ * - `usersRepository`: Repository for performing CRUD operations on `Users` entities.
+ *
+ * Purpose:
+ * - To provide endpoints for viewing, updating, and managing job seeker profiles.
+ *
+ * Key Functionalities:
+ * - `JobSeekerProfile(Model model)`: Handles GET requests for the job seeker profile page, retrieves the current user's job seeker profile, and populates the model with the profile data.
+ * - `addNew(JobSeekerProfile jobSeekerProfile, @RequestParam("image") MultipartFile image, @RequestParam("pdf") MultipartFile pdf, Model model)`: Handles POST requests for adding or updating a job seeker profile, sets the user ID, saves the profile photo and resume, and redirects to the dashboard.
+ * - `candidateProfile(@PathVariable("id") int id, Model model)`: Handles GET requests for viewing a specific job seeker profile by ID and populates the model with the profile data.
+ * - `downloadResume(@RequestParam(value = "fileName") String fileName, @RequestParam(value = "userID") String userId)`: Handles GET requests for downloading a job seeker's resume.
+ */
 @Controller
 @RequestMapping("/job-seeker-profile")
 public class JobSeekerProfileController {
@@ -38,6 +54,12 @@ public class JobSeekerProfileController {
     private UsersRepository usersRepository;
 
 
+    /**
+     * Constructs a new `JobSeekerProfileController` with the specified services and repository.
+     *
+     * @param jobSeekerProfileService the service for managing job seeker profile data
+     * @param usersRepository the repository for performing CRUD operations on `Users` entities
+     */
     @Autowired
     public JobSeekerProfileController(JobSeekerProfileService jobSeekerProfileService, UsersRepository usersRepository) {
         this.jobSeekerProfileService = jobSeekerProfileService;
@@ -121,7 +143,6 @@ public class JobSeekerProfileController {
         }
 
         return "redirect:/dashboard/";
-
     }
 
 
@@ -132,7 +153,6 @@ public class JobSeekerProfileController {
         model.addAttribute("profile", seekerProfile.get());
 
         return "job-seeker-profile";
-
     }
 
     @GetMapping("/downloadResume")

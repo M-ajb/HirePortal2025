@@ -22,6 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The `JobSeekerSaveController` class handles HTTP requests related to saving job posts for job seekers.
+ *
+ * Fields:
+ * - `usersService`: Service for managing user data.
+ * - `jobSeekerProfileService`: Service for managing job seeker profile data.
+ * - `jobPostActivityService`: Service for managing job post activity data.
+ * - `jobSeekerSaveService`: Service for managing saved job posts.
+ *
+ * Purpose:
+ * - To provide endpoints for saving job posts and viewing saved job posts for job seekers.
+ *
+ * Key Functionalities:
+ * - `save(int id, JobSeekerSave jobSeekerSave)`: Handles POST requests for saving a job post for the current user.
+ * - `savedJobs(Model model)`: Handles GET requests for viewing the saved job posts of the current user.
+ */
 @Controller
 public class JobSeekerSaveController {
 
@@ -30,6 +46,14 @@ public class JobSeekerSaveController {
     private final JobPostActivityService jobPostActivityService;
     private final JobSeekerSaveService jobSeekerSaveService;
 
+    /**
+     * Constructs a new `JobSeekerSaveController` with the specified services.
+     *
+     * @param usersService the service for managing user data
+     * @param jobSeekerProfileService the service for managing job seeker profile data
+     * @param jobPostActivityService the service for managing job post activity data
+     * @param jobSeekerSaveService the service for managing saved job posts
+     */
     @Autowired
     public JobSeekerSaveController(UsersService usersService, JobSeekerProfileService jobSeekerProfileService,
                                    JobPostActivityService jobPostActivityService, JobSeekerSaveService jobSeekerSaveService) {
@@ -80,9 +104,6 @@ public class JobSeekerSaveController {
         model.addAttribute("jobPost", jobPost);
         model.addAttribute("user", currentUserProfile);
 
-
         return "saved-jobs";
-
     }
-
 }

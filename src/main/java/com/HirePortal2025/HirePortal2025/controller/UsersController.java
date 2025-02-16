@@ -18,7 +18,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * The `UsersController` class handles HTTP requests related to user registration, login, and logout.
+ * It interacts with the `UsersService` and `UsersTypeService` to manage user data and types.
+ *
+ * Fields:
+ * - `usersTypeService`: Service for managing user types.
+ * - `usersService`: Service for managing user data.
+ *
+ * Purpose:
+ * - To provide endpoints for user registration, login, and logout.
+ *
+ * Key Functionalities:
+ * - `register(Model model)`: Handles GET requests for the registration page, populates the model with user types and a new user object.
+ * - `userRegistration(@Valid Users users, Model model)`: Handles POST requests for user registration, checks if the email is already registered, and adds a new user if not.
+ * - `login()`: Handles GET requests for the login page.
+ * - `logout(HttpServletRequest request, HttpServletResponse response)`: Handles GET requests for logging out the user, invalidates the session, and redirects to the home page.
+ */
 @Controller
 public class UsersController {
 
@@ -26,6 +42,12 @@ public class UsersController {
     private final UsersService usersService;
 
 
+    /**
+     * Constructs a new `UsersController` with the specified services.
+     *
+     * @param usersTypeService the service for managing user types
+     * @param usersService the service for managing user data
+     */
     @Autowired
     public UsersController(UsersTypeService usersTypeService, UsersService usersService) {
         this.usersTypeService = usersTypeService;
@@ -66,7 +88,6 @@ public class UsersController {
     }
 
 
-
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
 
@@ -78,7 +99,6 @@ public class UsersController {
         return "redirect:/";
 
     }
-
 }
 
 

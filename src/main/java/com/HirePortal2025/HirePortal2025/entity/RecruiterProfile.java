@@ -3,6 +3,29 @@ package com.HirePortal2025.HirePortal2025.entity;
 import jakarta.persistence.*;
 import org.springframework.transaction.annotation.Transactional;
 
+
+/**
+ * Represents a recruiter's profile in the system.
+ * This class is mapped to the "recruiter_profile" table in the database.
+ * It contains information about the recruiter such as their user account, personal details, and company information.
+ *
+ * Fields:
+ * - userAccountId: The unique identifier for the user account associated with the recruiter.
+ * - userId: The user entity associated with the recruiter.
+ * - firstName: The first name of the recruiter.
+ * - lastName: The last name of the recruiter.
+ * - city: The city where the recruiter is located.
+ * - state: The state where the recruiter is located.
+ * - country: The country where the recruiter is located.
+ * - company: The company the recruiter is associated with.
+ * - profilePhoto: The profile photo of the recruiter.
+ *
+ * Key Functionalities:
+ * - Getters and setters for all fields.
+ * - Default constructor and parameterized constructors.
+ * - Method to get the path of the profile photo.
+ * - toString method to provide a string representation of the recruiter profile entity.
+ */
 @Entity
 @Table(name="recruiter_profile")
 public class RecruiterProfile {
@@ -33,6 +56,19 @@ public class RecruiterProfile {
         this.userId = userId;
     }
 
+    /**
+     * Constructs a new RecruiterProfile object with the specified details.
+     *
+     * @param userAccountId The unique identifier for the user account associated with the recruiter.
+     * @param userId The user entity associated with the recruiter.
+     * @param firstName The first name of the recruiter.
+     * @param lastName The last name of the recruiter.
+     * @param city The city where the recruiter is located.
+     * @param state The state where the recruiter is located.
+     * @param country The country where the recruiter is located.
+     * @param company The company the recruiter is associated with.
+     * @param profilePhoto The profile photo of the recruiter.
+     */
     public RecruiterProfile(int userAccountId, Users userId, String firstName, String lastName, String city, String state, String country, String company, String profilePhoto) {
         this.userAccountId = userAccountId;
         this.userId = userId;

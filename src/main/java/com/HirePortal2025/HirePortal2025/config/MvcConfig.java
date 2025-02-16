@@ -7,6 +7,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * The `MvcConfig` class configures the Spring MVC settings for the application.
+ * It sets up resource handlers to serve static resources such as uploaded files.
+ *
+ * Fields:
+ * - `UPLOAD_DIR`: The directory where uploaded files are stored.
+ *
+ * Purpose:
+ * - To configure resource handlers for serving static resources.
+ *
+ * Key Functionalities:
+ * - `addResourceHandlers(ResourceHandlerRegistry registry)`: Adds resource handlers to serve static resources.
+ * - `exposeDirectory(String uploadDir, ResourceHandlerRegistry registry)`: Maps a directory to a URL path for serving static resources.
+ */
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 

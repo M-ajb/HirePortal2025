@@ -6,7 +6,21 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.io.Serializable;
 import java.util.Date;
 
-
+/**
+ * The `JobSeekerApply` class represents an application made by a job seeker for a job post in the HirePortal2025 application.
+ * It contains information about the job seeker, the job post, the application date, and the cover letter.
+ *
+ * Fields:
+ * - `id`: The unique identifier for the job application.
+ * - `userId`: The job seeker who applied for the job, represented by a `JobSeekerProfile` object.
+ * - `job`: The job post that the job seeker applied for, represented by a `JobPostActivity` object.
+ * - `applyDate`: The date when the job application was made.
+ * - `coverLetter`: The cover letter submitted by the job seeker with the application.
+ *
+ * Key Functionalities:
+ * - Provides getter and setter methods for all fields to access and modify the job application details.
+ * - `toString` method to provide a string representation of the job application.
+ */
 @Entity
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"userId", "job"})
@@ -32,12 +46,18 @@ public class JobSeekerApply implements Serializable {
     private String coverLetter;
 
 
-
-
     public JobSeekerApply() {
     }
 
-
+/**
+ * Constructs a new `JobSeekerApply` object with the specified details.
+ *
+ * @param id The unique identifier for the job application.
+ * @param userId The job seeker who applied for the job, represented by a `JobSeekerProfile` object.
+ * @param job The job post that the job seeker applied for, represented by a `JobPostActivity` object.
+ * @param applyDate The date when the job application was made.
+ * @param coverLetter The cover letter submitted by the job seeker with the application.
+ */
     public JobSeekerApply(Integer id, JobSeekerProfile userId, JobPostActivity job, Date applyDate, String coverLetter) {
         this.id = id;
         this.userId = userId;

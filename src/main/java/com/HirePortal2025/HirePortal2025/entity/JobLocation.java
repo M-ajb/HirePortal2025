@@ -6,13 +6,30 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+/**
+ * The `JobLocation` class represents a location where a job is based in the HirePortal2025 application.
+ * It contains information about the city, state, and country of the job location.
+ *
+ * Fields:
+ * - `Id`: The unique identifier for the job location.
+ * - `city`: The city where the job is located.
+ * - `state`: The state where the job is located.
+ * - `country`: The country where the job is located.
+ *
+ * Purpose:
+ * - To store and manage information about job locations in the HirePortal2025 application.
+ *
+ * Key Functionalities:
+ * - Provides getter and setter methods for all fields to access and modify the job location details.
+ * - `toString` method to provide a string representation of the job location.
+ */
 @Entity
 public class JobLocation {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer Id;
+    private Integer id;
 
     private String city;
     private String state;
@@ -22,19 +39,27 @@ public class JobLocation {
     public JobLocation() {
     }
 
+    /**
+     * Constructs a new `JobLocation` object with the specified details.
+     *
+     * @param id The unique identifier for the job location.
+     * @param city The city where the job is located.
+     * @param state The state where the job is located.
+     * @param country The country where the job is located.
+     */
     public JobLocation(Integer id, String city, String state, String country) {
-        Id = id;
+        this.id = id;
         this.city = city;
         this.state = state;
         this.country = country;
     }
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getCity() {
@@ -65,7 +90,7 @@ public class JobLocation {
     @Override
     public String toString() {
         return "JobLocation{" +
-                "Id=" + Id +
+                "id=" + id +
                 ", city='" + city + '\'' +
                 ", state='" + state + '\'' +
                 ", country='" + country + '\'' +

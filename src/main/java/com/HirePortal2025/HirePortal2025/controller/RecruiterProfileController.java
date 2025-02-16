@@ -23,7 +23,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Objects;
 import java.util.Optional;
 
-
+/**
+ * The `RecruiterProfileController` class handles HTTP requests related to recruiter profiles.
+ * It interacts with the `UsersRepository` and `RecruiterProfileService` to manage recruiter profile data.
+ *
+ * Fields:
+ * - `usersRepository`: Repository for performing CRUD operations on `Users` entities.
+ * - `recruiterProfileService`: Service for managing recruiter profile data.
+ *
+ * Purpose:
+ * - To provide endpoints for viewing and updating recruiter profiles.
+ *
+ * Key Functionalities:
+ * - `recruiterProfile(Model model)`: Handles GET requests for the recruiter profile page, retrieves the current user's recruiter profile, and populates the model with the profile data.
+ * - `addNew(RecruiterProfile recruiterProfile, @RequestParam("image") MultipartFile multipartFile, Model model)`: Handles POST requests for adding or updating a recruiter profile, sets the user ID, saves the profile photo, and redirects to the dashboard.
+ */
 @Controller
 @RequestMapping("/recruiter-profile")
 public class RecruiterProfileController {
@@ -31,6 +45,12 @@ public class RecruiterProfileController {
     private final UsersRepository usersRepository;
     private final RecruiterProfileService recruiterProfileService;
 
+    /**
+     * Constructs a new `RecruiterProfileController` with the specified repositories and services.
+     *
+     * @param usersRepository the repository for performing CRUD operations on `Users` entities
+     * @param recruiterProfileService the service for managing recruiter profile data
+     */
     @Autowired
     public RecruiterProfileController(UsersRepository usersRepository, RecruiterProfileService recruiterProfileService) {
         this.usersRepository = usersRepository;
@@ -88,8 +108,4 @@ public class RecruiterProfileController {
         }
         return "redirect:/dashboard/";
     }
-
-
-
-
 }

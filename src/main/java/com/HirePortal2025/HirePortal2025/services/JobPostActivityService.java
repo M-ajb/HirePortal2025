@@ -10,11 +10,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The `JobPostActivityService` class provides services related to job post activity management.
+ * It includes methods to add new job posts, retrieve job posts by ID, get all job posts,
+ * search for job posts based on various criteria, and retrieve jobs posted by a specific recruiter.
+ *
+ * Fields:
+ * - `jobPostActivityRepository`: Repository for performing CRUD operations on `JobPostActivity` entities.
+ *
+ * Key Functionalities:
+ * - `addNew(JobPostActivity jobPostActivity)`: Adds a new job post activity.
+ * - `getRecruiterJobs(int recruiter)`: Retrieves a list of jobs posted by a specific recruiter.
+ * - `getOne(int id)`: Retrieves a job post activity by its ID.
+ * - `getAll()`: Retrieves all job post activities.
+ * - `search(String job, String location, List<String> type, List<String> remote, LocalDate searchDate)`:
+ *   Searches for job posts based on job title, location, type, remote status, and search date.
+ */
 @Service
 public class JobPostActivityService {
 
     private final JobPostActivityRepository jobPostActivityRepository;
 
+    /**
+     * Constructs a new `JobPostActivityService` with the specified repository.
+     *
+     * @param jobPostActivityRepository the repository for performing CRUD operations on `JobPostActivity` entities
+     */
     @Autowired
     public JobPostActivityService(JobPostActivityRepository jobPostActivityRepository) {
         this.jobPostActivityRepository = jobPostActivityRepository;

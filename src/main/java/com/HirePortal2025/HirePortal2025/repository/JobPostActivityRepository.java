@@ -9,6 +9,29 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * The `JobPostActivityRepository` interface extends the JpaRepository interface
+ * to provide CRUD operations for the JobPostActivity entity.
+ *
+ * This repository interface includes methods to retrieve job post activities
+ * based on various criteria such as recruiter ID, job title, location, job type,
+ * remote status, and posted date.
+ *
+ * Fields:
+ * - JobPostActivity: The entity type that this repository manages.
+ * - Integer: The type of the entity's identifier.
+ *
+ * Key Functionalities:
+ * - getRecruiterJobs(int recruiter): Retrieves a list of job post activities
+ *   along with the total number of candidates, job details, location, and company
+ *   information for a specific recruiter.
+ * - searchWithoutDate(String job, String location, List<String> remote, List<String> type):
+ *   Searches for job post activities based on job title, location, job type, and remote status
+ *   without considering the posted date.
+ * - search(String job, String location, List<String> remote, List<String> type, LocalDate date):
+ *   Searches for job post activities based on job title, location, job type, remote status,
+ *   and posted date.
+ */
 public interface JobPostActivityRepository extends JpaRepository<JobPostActivity, Integer> {
 
 
