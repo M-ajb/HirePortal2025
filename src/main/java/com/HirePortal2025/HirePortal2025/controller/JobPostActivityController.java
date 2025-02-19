@@ -229,7 +229,7 @@ public class JobPostActivityController {
 
 
         if(user != null){
-            jobPostActivity.setPostById(user);
+            jobPostActivity.setPostedById(user);
         }
         jobPostActivity.setPostedDate(new Date());
         model.addAttribute("jobPostActivity", jobPostActivity);

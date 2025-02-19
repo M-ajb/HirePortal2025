@@ -14,7 +14,7 @@ import java.util.Date;
  *
  * Fields:
  * - `jobPostId`: The unique identifier for the job post.
- * - `postById`: The user who posted the job, represented by a `Users` object.
+ * - `postedById`: The user who posted the job, represented by a `Users` object.
  * - `jobLocationId`: The location of the job, represented by a `JobLocation` object.
  * - `jobCompanyId`: The company offering the job, represented by a `JobCompany` object.
  * - `isActive`: A transient field indicating whether the job post is active.
@@ -41,7 +41,7 @@ public class JobPostActivity {
 
     @ManyToOne
     @JoinColumn(name = "postedById" , referencedColumnName = "userId")
-    private Users postById;
+    private Users postedById;
 
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -65,7 +65,7 @@ public class JobPostActivity {
     private String salary;
     private String remote;
 
-    @DateTimeFormat(pattern = "dd-MM-yyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date postedDate;
     private String jobTitle;
 
@@ -77,7 +77,7 @@ public class JobPostActivity {
      * Constructs a new `JobPostActivity` object with the specified details.
      *
      * @param jobPostId The unique identifier for the job post.
-     * @param postById The user who posted the job, represented by a `Users` object.
+     * @param postedById The user who posted the job, represented by a `Users` object.
      * @param jobLocationId The location of the job, represented by a `JobLocation` object.
      * @param jobCompanyId The company offering the job, represented by a `JobCompany` object.
      * @param isActive A transient field indicating whether the job post is active.
@@ -89,9 +89,9 @@ public class JobPostActivity {
      * @param postedDate The date when the job was posted.
      * @param jobTitle The title of the job.
      */
-    public JobPostActivity(Integer jobPostId, Users postById, JobLocation jobLocationId, JobCompany jobCompanyId, Boolean isActive, Boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
+    public JobPostActivity(Integer jobPostId, Users postedById, JobLocation jobLocationId, JobCompany jobCompanyId, Boolean isActive, Boolean isSaved, String descriptionOfJob, String jobType, String salary, String remote, Date postedDate, String jobTitle) {
         this.jobPostId = jobPostId;
-        this.postById = postById;
+        this.postedById = postedById;
         this.jobLocationId = jobLocationId;
         this.jobCompanyId = jobCompanyId;
         this.isActive = isActive;
@@ -113,12 +113,12 @@ public class JobPostActivity {
         this.jobPostId = jobPostId;
     }
 
-    public Users getPostById() {
-        return postById;
+    public Users getPostedById() {
+        return postedById;
     }
 
-    public void setPostById(Users postById) {
-        this.postById = postById;
+    public void setPostedById(Users postedById) {
+        this.postedById = postedById;
     }
 
     public JobLocation getJobLocationId() {
@@ -206,7 +206,7 @@ public class JobPostActivity {
     public String toString() {
         return "JobPostActivity{" +
                 "jobPostId=" + jobPostId +
-                ", postById=" + postById +
+                ", postedById=" + postedById +
                 ", jobLocationId=" + jobLocationId +
                 ", jobCompanyId=" + jobCompanyId +
                 ", isActive=" + isActive +
