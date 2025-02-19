@@ -1,6 +1,7 @@
 package com.HirePortal2025.HirePortal2025.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -57,7 +58,7 @@ public class JobPostActivity {
     @Transient
     private Boolean isSaved;
 
-    @Length(max = 10000)
+    @Column(columnDefinition = "TEXT")
     private String descriptionOfJob;
 
     private String jobType;
@@ -152,11 +153,12 @@ public class JobPostActivity {
         isSaved = saved;
     }
 
-    public @Length(max = 10000) String getDescriptionOfJob() {
+
+    public String getDescriptionOfJob() {
         return descriptionOfJob;
     }
 
-    public void setDescriptionOfJob(@Length(max = 10000) String descriptionOfJob) {
+    public void setDescriptionOfJob(String descriptionOfJob) {
         this.descriptionOfJob = descriptionOfJob;
     }
 
