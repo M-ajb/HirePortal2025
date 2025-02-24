@@ -149,6 +149,13 @@ public class JobPostActivityController {
 
 
 
+    /**
+     * Handles the addition of new job post activities.
+     * Displays the add job post form and adds the new job post activity to the database.
+     *
+     * @param model the Model object to pass attributes to the view
+     * @return the name of the view to be rendered
+     */
     @GetMapping("/dashboard/add")
     public String addJobs(Model model){
 
@@ -161,7 +168,13 @@ public class JobPostActivityController {
 
 
 
-
+    /**
+     * Adds a new job post activity to the database.
+     *
+     * @param jobPostActivity the job post activity to be added
+     * @param model the Model object to pass attributes to the view
+     * @return the name of the view to be rendered
+     */
     @PostMapping("/dashboard/addNew")
     public String addNew(JobPostActivity jobPostActivity, Model model){
         Users user = usersService.getCurrentUser();
@@ -175,6 +188,13 @@ public class JobPostActivityController {
     }
 
 
+    /**
+     * Edits an existing job post activity.
+     *
+     * @param id the ID of the job post activity to be edited
+     * @param model the Model object to pass attributes to the view
+     * @return the name of the view to be rendered
+     */
     @PostMapping("dashboard/edit/{id}")
     public String editJob(@PathVariable("id") int id, Model model){
         JobPostActivity jobPostActivity = jobPostActivityService.getOne(id);

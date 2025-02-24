@@ -45,6 +45,7 @@ public class RecruiterProfileController {
     private final UsersRepository usersRepository;
     private final RecruiterProfileService recruiterProfileService;
 
+
     /**
      * Constructs a new `RecruiterProfileController` with the specified repositories and services.
      *
@@ -62,16 +63,12 @@ public class RecruiterProfileController {
     public String recruiterProfile(Model model){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            Users user = usersRepository.findByEmail(authentication.getName())
+                    .orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
 
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            String currentUsername = authentication.getName();
-           Users users = usersRepository.findByEmail(currentUsername).orElseThrow(() -> new UsernameNotFoundException("Could not " + "found user"));
-
-            Optional<RecruiterProfile> recruiterProfile = recruiterProfileService.getOne(users.getUserId());
-
-            if(!recruiterProfile.isEmpty()){
-                model.addAttribute("profile", recruiterProfile.get());
-            }
+            recruiterProfileService.getOne(user.getUserId())
+                    .ifPresent(profile -> model.addAttribute("profile", profile));
         }
         return "recruiter_profile";
     }
@@ -81,30 +78,26 @@ public class RecruiterProfileController {
     public String addNew(RecruiterProfile recruiterProfile, @RequestParam("image")MultipartFile multipartFile, Model model){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            Users user = usersRepository.findByEmail(authentication.getName())
+                    .orElseThrow(() -> new UsernameNotFoundException("Could not find user"));
 
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            String currentUsername = authentication.getName();
-            Users users = usersRepository.findByEmail(currentUsername).orElseThrow(() -> new UsernameNotFoundException("Could not " + "found user"));
-
-            recruiterProfile.setUserId(users);
-            recruiterProfile.setUserAccountId(users.getUserId());
+            recruiterProfile.setUserId(user);
+            recruiterProfile.setUserAccountId(user.getUserId());
         }
         model.addAttribute("profile", recruiterProfile);
 
-        String fileName = "";
+        String fileName = multipartFile.isEmpty() ? "" : StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        recruiterProfile.setProfilePhoto(fileName);
 
-        if( ! multipartFile.getOriginalFilename().equals("")){
-            fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-            recruiterProfile.setProfilePhoto(fileName);
-        }
         RecruiterProfile savedUser = recruiterProfileService.addNew(recruiterProfile);
 
-        String uploadDir = "photos/recruiter/" + savedUser.getUserAccountId();
-        try{
-            FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-
-        }catch (Exception ex){
-            ex.printStackTrace();
+        if (!fileName.isEmpty()) {
+            try {
+                FileUploadUtil.saveFile("photos/recruiter/" + savedUser.getUserAccountId(), fileName, multipartFile);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         return "redirect:/dashboard/";
     }

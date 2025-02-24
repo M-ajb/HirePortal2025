@@ -63,6 +63,12 @@ public class JobSeekerProfileController {
     }
 
 
+    /**
+     * Displays the job seeker profile page with the current user's job seeker profile.
+     *
+     * @param model the model to which attributes are added
+     * @return the job seeker profile page
+     */
     @GetMapping("/")
     public String jobSeekerProfile(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -83,8 +89,15 @@ public class JobSeekerProfileController {
     }
 
 
-
-
+    /**
+     * Adds a new job seeker profile with the specified profile data, image, and resume.
+     *
+     * @param jobSeekerProfile the job seeker profile to add
+     * @param image the profile photo image
+     * @param pdf the resume PDF file
+     * @param model the model to which attributes are added
+     * @return the dashboard page
+     */
     @PostMapping("/addNew")
     public String addNew(JobSeekerProfile jobSeekerProfile, @RequestParam("image")MultipartFile image, @RequestParam("pdf") MultipartFile pdf, Model model){
 
@@ -127,6 +140,13 @@ public class JobSeekerProfileController {
     }
 
 
+    /**
+     * Displays the job seeker profile page with the specified job seeker profile ID.
+     *
+     * @param id the ID of the job seeker profile
+     * @param model the model to which attributes are added
+     * @return the job seeker profile page
+     */
     @GetMapping("/{id}")
     public String candidateProfile(@PathVariable("id") int id, Model model){
         jobSeekerProfileService.getOne(id).ifPresent(profile -> model.addAttribute("profile", profile));
@@ -134,6 +154,13 @@ public class JobSeekerProfileController {
     }
 
 
+    /**
+     * Downloads the resume of the job seeker with the specified file name and user ID.
+     *
+     * @param fileName the name of the resume file
+     * @param userId the ID of the job seeker
+     * @return the resume file as a response entity
+     */
     @GetMapping("/downloadResume")
     public ResponseEntity<?> downloadResume(@RequestParam(value = "fileName") String fileName,
                                             @RequestParam(value = "userID") String userId){

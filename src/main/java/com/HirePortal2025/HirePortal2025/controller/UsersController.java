@@ -55,24 +55,33 @@ public class UsersController {
 
     }
 
+    /**
+     * Displays the registration page with the user types.
+     *
+     * @param model the model to which attributes are added
+     * @return the registration page
+     */
     @GetMapping("/register")
     public String register(Model model) {
-        List<UsersType> usersTypes = usersTypeService.getAll();
-        model.addAttribute("getAllTypes", usersTypes);
+        model.addAttribute("getAllTypes", usersTypeService.getAll());
         model.addAttribute("user", new Users());
         return "register";
     }
 
 
+    /**
+     * Registers a new user with the specified details.
+     *
+     * @param users the user entity to be registered
+     * @param model the model to which attributes are added
+     * @return the dashboard page
+     */
     @PostMapping("/register/new")
     public String userRegistration(@Valid Users users, Model model) {
 
-        Optional<Users> optionalUsers = usersService.getUserByEmail(users.getEmail());
-
-        if(optionalUsers.isPresent()){
-            model.addAttribute("error" , "Email already registered, try to login or register with other email.");
-            List<UsersType> usersTypes = usersTypeService.getAll();
-            model.addAttribute("getAllTypes", usersTypes);
+        if (usersService.getUserByEmail(users.getEmail()).isPresent()) {
+            model.addAttribute("error", "Email already registered, try to login or register with another email.");
+            model.addAttribute("getAllTypes", usersTypeService.getAll());
             model.addAttribute("user", new Users());
             return "register";
         }
@@ -80,24 +89,30 @@ public class UsersController {
         return "redirect:/dashboard/";
     }
 
-
-
+    /**
+     * Displays the login page.
+     *
+     * @return the login page
+     */
     @GetMapping("/login")
     public String login(){
         return "login";
     }
 
 
+    /**
+     * Logs out the current user and redirects to the home page.
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @return the home page
+     */
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response){
 
-        Authentication authentication = SecurityContextHolder.getContext()
-                .getAuthentication();
-        if(authentication != null){
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) new SecurityContextLogoutHandler().logout(request, response, authentication);
         return "redirect:/";
-
     }
 }
 

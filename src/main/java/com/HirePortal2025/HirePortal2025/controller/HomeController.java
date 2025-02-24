@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
+    /**
+     * Displays the home page.
+     *
+     * @return the view name "index"
+     */
     @GetMapping("/")
     public String home(){
         return "index";

@@ -64,7 +64,13 @@ public class JobSeekerSaveController {
         this.jobSeekerSaveService = jobSeekerSaveService;
     }
 
-
+    /**
+     * Saves the specified job post for the current user.
+     *
+     * @param id the ID of the job post activity
+     * @param jobSeekerSave the job seeker save entity
+     * @return the dashboard page
+     */
     @PostMapping("job-details/save/{id}")
     public String save(@PathVariable("id") int id, JobSeekerSave jobSeekerSave){
 
@@ -89,6 +95,12 @@ public class JobSeekerSaveController {
     }
 
 
+    /**
+     * Displays the saved job posts of the current user.
+     *
+     * @param model the model to which attributes are added
+     * @return the saved jobs page
+     */
     @GetMapping("saved-jobs/")
     public String savedJobs(Model model){
         Object currentUserProfile = usersService.getCurrentUserProfile();

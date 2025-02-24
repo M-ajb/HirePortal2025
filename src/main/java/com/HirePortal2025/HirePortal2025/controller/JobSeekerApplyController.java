@@ -39,6 +39,13 @@ public class JobSeekerApplyController {
         this.jobSeekerProfileService = jobSeekerProfileService;
     }
 
+    /**
+     * Displays the job details page with the specified job post activity.
+     *
+     * @param id    the ID of the job post activity
+     * @param model the model to which attributes are added
+     * @return the job details page
+     */
     @GetMapping("/job-details-apply/{id}")
     public String display(@PathVariable("id") int id, Model model) {
         JobPostActivity jobDetails = jobPostActivityService.getOne(id);
@@ -71,6 +78,12 @@ public class JobSeekerApplyController {
     }
 
 
+    /**
+     * Applies for the job post activity with the specified ID.
+     *
+     * @param id the ID of the job post activity
+     * @return the dashboard page
+     */
     @PostMapping("job-details/apply/{id}")
     public String apply(@PathVariable("id") int id){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
