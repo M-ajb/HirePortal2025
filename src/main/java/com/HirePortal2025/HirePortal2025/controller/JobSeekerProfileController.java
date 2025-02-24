@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * The `JobSeekerProfileController` class handles HTTP requests related to job seeker profiles.
@@ -50,7 +47,6 @@ import java.util.Optional;
 public class JobSeekerProfileController {
 
     private JobSeekerProfileService jobSeekerProfileService;
-
     private UsersRepository usersRepository;
 
 
@@ -66,32 +62,25 @@ public class JobSeekerProfileController {
         this.usersRepository = usersRepository;
     }
 
+
     @GetMapping("/")
-    public String JobSeekerProfile(Model model){
-
-        JobSeekerProfile jobSeekerProfile = new JobSeekerProfile();
-
+    public String jobSeekerProfile(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<Skills> skills = new ArrayList<>();
+        if (authentication instanceof AnonymousAuthenticationToken) return "job-seeker-profile";
 
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            Users user = usersRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        Users user = usersRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            Optional<JobSeekerProfile> seekerProfile = jobSeekerProfileService.getOne(user.getUserId());
+        JobSeekerProfile jobSeekerProfile = jobSeekerProfileService.getOne(user.getUserId())
+                .orElse(new JobSeekerProfile());
 
-            if(seekerProfile.isPresent()){
-                jobSeekerProfile = seekerProfile.get();
-                if(jobSeekerProfile.getSkills().isEmpty()){
-                    skills.add(new Skills());
-                    jobSeekerProfile.setSkills(skills);
-                }
-            }
-            model.addAttribute("skills", skills);
-            model.addAttribute("profile", jobSeekerProfile);
-        }
+        if (jobSeekerProfile.getSkills().isEmpty())
+            jobSeekerProfile.setSkills(Collections.singletonList(new Skills()));
+
+        model.addAttribute("skills", jobSeekerProfile.getSkills());
+        model.addAttribute("profile", jobSeekerProfile);
         return "job-seeker-profile";
     }
-
 
 
 
@@ -101,44 +90,36 @@ public class JobSeekerProfileController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            Users user = usersRepository.findByEmail(authentication.getName()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            Users user = usersRepository.findByEmail(authentication.getName())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
             jobSeekerProfile.setUserId(user);
             jobSeekerProfile.setUserAccountId(user.getUserId());
         }
-        List<Skills> skillsList = new ArrayList<>();
+
         model.addAttribute("profile", jobSeekerProfile);
-        model.addAttribute("skills", skillsList);
+        model.addAttribute("skills", new ArrayList<>());
 
-        for(Skills skills : jobSeekerProfile.getSkills()){
-            skills.setJobSeekerProfile(jobSeekerProfile);
+        jobSeekerProfile.getSkills().forEach(skill -> skill.setJobSeekerProfile(jobSeekerProfile));
+
+        if (!Objects.equals(image.getOriginalFilename(), "")) {
+            jobSeekerProfile.setProfilePhoto(StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename())));
         }
 
-        String imageName = "";
-        String resumeName = "";
-
-        if(!Objects.equals(image.getOriginalFilename(), "")){
-            imageName = StringUtils.cleanPath(Objects.requireNonNull(image.getOriginalFilename()));
-            jobSeekerProfile.setProfilePhoto(imageName);
+        if (!Objects.equals(pdf.getOriginalFilename(), "")) {
+            jobSeekerProfile.setResume(StringUtils.cleanPath(Objects.requireNonNull(pdf.getOriginalFilename())));
         }
 
-        if(!Objects.equals(pdf.getOriginalFilename(), "")){
-            resumeName = StringUtils.cleanPath(Objects.requireNonNull(pdf.getOriginalFilename()));
-            jobSeekerProfile.setResume(resumeName);
-        }
+        jobSeekerProfileService.addNew(jobSeekerProfile);
 
-        JobSeekerProfile seekerProfile = jobSeekerProfileService.addNew(jobSeekerProfile);
-
-        try{
+        try {
             String uploadDir = "photos/candidate/" + jobSeekerProfile.getUserAccountId();
-            if(!Objects.equals(image.getOriginalFilename(),"")){
-                FileUploadUtil.saveFile(uploadDir,imageName, image);
-            }
-            if(!Objects.equals(pdf.getOriginalFilename(),"")){
-                FileUploadUtil.saveFile(uploadDir,resumeName, pdf);
-            }
+            if (!Objects.equals(image.getOriginalFilename(), ""))
+                FileUploadUtil.saveFile(uploadDir, jobSeekerProfile.getProfilePhoto(), image);
+            if (!Objects.equals(pdf.getOriginalFilename(), ""))
+                FileUploadUtil.saveFile(uploadDir, jobSeekerProfile.getResume(), pdf);
 
-        }catch (IOException ex){
+        } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
 
@@ -148,34 +129,29 @@ public class JobSeekerProfileController {
 
     @GetMapping("/{id}")
     public String candidateProfile(@PathVariable("id") int id, Model model){
-
-        Optional<JobSeekerProfile> seekerProfile = jobSeekerProfileService.getOne(id);
-        model.addAttribute("profile", seekerProfile.get());
-
+        jobSeekerProfileService.getOne(id).ifPresent(profile -> model.addAttribute("profile", profile));
         return "job-seeker-profile";
     }
 
+
     @GetMapping("/downloadResume")
-    public ResponseEntity<?> downloadResume(@RequestParam(value = "fileName") String fileName, @RequestParam(value = "userID") String userId){
+    public ResponseEntity<?> downloadResume(@RequestParam(value = "fileName") String fileName,
+                                            @RequestParam(value = "userID") String userId){
 
         FileDownloadUtil fileDownloadUtil = new FileDownloadUtil();
-        Resource resource = null;
+        Resource resource;
 
-        try{
+        try {
             resource = fileDownloadUtil.getFileAsResourse("photos/candidate/" + userId, fileName);
-        }catch (IOException io){
+        } catch (IOException io) {
             return ResponseEntity.badRequest().build();
         }
 
-        if(resource == null){
-            return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
-        }
+        if (resource == null) return new ResponseEntity<>("File not found", HttpStatus.NOT_FOUND);
 
-        String contentType = "application/octet-stream";
-        String headerValue = "attachment; filename=\"" + resource.getFilename() + "\"";
-
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, headerValue)
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
 }

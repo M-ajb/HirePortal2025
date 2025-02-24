@@ -149,10 +149,6 @@ public class JobPostActivityController {
 
 
 
-
-
-
-
     @GetMapping("/dashboard/add")
     public String addJobs(Model model){
 
@@ -181,7 +177,6 @@ public class JobPostActivityController {
 
     @PostMapping("dashboard/edit/{id}")
     public String editJob(@PathVariable("id") int id, Model model){
-
         JobPostActivity jobPostActivity = jobPostActivityService.getOne(id);
         model.addAttribute("jobPostActivity", jobPostActivity);
         model.addAttribute("user", usersService.getCurrentUserProfile());

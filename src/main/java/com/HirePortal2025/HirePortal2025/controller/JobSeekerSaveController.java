@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * The `JobSeekerSaveController` class handles HTTP requests related to saving job posts for job seekers.
@@ -69,41 +70,35 @@ public class JobSeekerSaveController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(!(authentication instanceof AnonymousAuthenticationToken)){
-            
-            String currentUsername = authentication.getName();
-            Users user = usersService.findByEmail(currentUsername);
-            Optional<JobSeekerProfile> seekerProfile = jobSeekerProfileService.getOne(user.getUserId());
+        if (authentication instanceof AnonymousAuthenticationToken)
+            return "redirect:/dashboard/";
 
-            JobPostActivity jobPostActivity = jobPostActivityService.getOne(id);
-            if(seekerProfile.isPresent() && jobPostActivity != null){
-                jobSeekerSave = new JobSeekerSave();
-                jobSeekerSave.setJob(jobPostActivity);
-                jobSeekerSave.setUserId(seekerProfile.get());
-            }else{
-                throw new RuntimeException("User not found");
-            }
+        Users user = usersService.findByEmail(authentication.getName());
+        JobSeekerProfile seekerProfile = jobSeekerProfileService.getOne(user.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        JobPostActivity jobPostActivity = jobPostActivityService.getOne(id);
+
+        if (jobPostActivity != null) {
+            jobSeekerSave = new JobSeekerSave();
+            jobSeekerSave.setJob(jobPostActivity);
+            jobSeekerSave.setUserId(seekerProfile);
             jobSeekerSaveService.addNew(jobSeekerSave);
         }
+
         return "redirect:/dashboard/";
     }
 
 
     @GetMapping("saved-jobs/")
     public String savedJobs(Model model){
-
-        List<JobPostActivity> jobPost = new ArrayList<>();
         Object currentUserProfile = usersService.getCurrentUserProfile();
 
-        List<JobSeekerSave> jobSeekerSaveList = jobSeekerSaveService.getCandidatesJob((JobSeekerProfile) currentUserProfile);
-
-        for(JobSeekerSave jobSeekerSave : jobSeekerSaveList){
-            jobPost.add(jobSeekerSave.getJob());
-        }
+        List<JobPostActivity> jobPost = jobSeekerSaveService.getCandidatesJob((JobSeekerProfile) currentUserProfile)
+                .stream().map(JobSeekerSave::getJob).collect(Collectors.toList());
 
         model.addAttribute("jobPost", jobPost);
         model.addAttribute("user", currentUserProfile);
-
         return "saved-jobs";
+
     }
 }
