@@ -20,21 +20,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.util.List;
 import java.util.Optional;
 /**
- * The `UsersController` class handles HTTP requests related to user registration, login, and logout.
- * It interacts with the `UsersService` and `UsersTypeService` to manage user data and types.
- *
- * Fields:
- * - `usersTypeService`: Service for managing user types.
- * - `usersService`: Service for managing user data.
+ * The `UsersController` class defines a controller for managing user registration and login.
  *
  * Purpose:
- * - To provide endpoints for user registration, login, and logout.
+ * - To handle user registration and login requests.
  *
  * Key Functionalities:
- * - `register(Model model)`: Handles GET requests for the registration page, populates the model with user types and a new user object.
- * - `userRegistration(@Valid Users users, Model model)`: Handles POST requests for user registration, checks if the email is already registered, and adds a new user if not.
- * - `login()`: Handles GET requests for the login page.
- * - `logout(HttpServletRequest request, HttpServletResponse response)`: Handles GET requests for logging out the user, invalidates the session, and redirects to the home page.
+ * - `register(Model model)`: Displays the registration page with the user types.
+ * - `userRegistration(Users users, Model model, HttpServletRequest request)`: Registers a new user and redirects to the login page.
+ * - `login()`: Displays the login page.
+ * - `logout(HttpServletRequest request, HttpServletResponse response)`: Logs out the current user and redirects to the home page.
  */
 @Controller
 public class UsersController {
@@ -71,11 +66,12 @@ public class UsersController {
 
 
     /**
-     * Registers a new user with the specified details.
+     * Registers a new user and redirects to the login page.
      *
-     * @param users the user entity to be registered
+     * @param users the user to register
      * @param model the model to which attributes are added
-     * @return the dashboard page
+     * @param request the HTTP request
+     * @return the login page
      */
     @PostMapping("/register/new")
     public String userRegistration(@Valid Users users, Model model, HttpServletRequest request) {
@@ -88,10 +84,18 @@ public class UsersController {
         }
 
         usersService.addNew(users);
-        request.getSession().setAttribute("firstTimeLogin", true); // Zet een session attribuut
+
+        // Set a session attribute for first time login, for both Job Seekers and Recruiters
+        if (users.getUserTypeId().getUserTypeName().equals("Job Seeker")) {
+            request.getSession().setAttribute("firstTimeLoginJobSeeker", true);
+        } else if (users.getUserTypeId().getUserTypeName().equals("Recruiter")) {
+            request.getSession().setAttribute("firstTimeLoginRecruiter", true);
+        }
 
         return "redirect:/login"; // Stuur gebruiker naar login pagina
     }
+
+
 
     /**
      * Displays the login page.

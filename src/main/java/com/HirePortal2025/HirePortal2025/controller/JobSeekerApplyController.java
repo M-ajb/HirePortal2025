@@ -17,7 +17,24 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * The `JobSeekerApplyController` class handles job application-related requests for job seekers.
+ *
+ * Purpose:
+ * - To manage job applications and display job details for job seekers.
+ *
+ * Key Functionalities:
+ * - `display(int id, Model model)`: Displays the job details page with the specified job post activity.
+ * - `apply(int id)`: Applies for the job post activity with the specified ID.
+ *
+ * Fields:
+ * - `jobPostActivityService`: Service for managing job post activities.
+ * - `usersService`: Service for managing user data.
+ * - `jobSeekerApplyService`: Service for managing job applications.
+ * - `jobSeekerSaveService`: Service for managing saved job posts.
+ * - `recruiterProfileService`: Service for managing recruiter profiles.
+ * - `jobSeekerProfileService`: Service for managing job seeker profiles.
+ */
 @Controller
 public class JobSeekerApplyController {
 

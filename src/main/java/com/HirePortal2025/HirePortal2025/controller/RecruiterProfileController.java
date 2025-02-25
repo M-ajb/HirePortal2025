@@ -59,6 +59,13 @@ public class RecruiterProfileController {
     }
 
 
+    /**
+     * Handles GET requests for the recruiter profile page.
+     * Retrieves the current user's recruiter profile and populates the model with the profile data.
+     *
+     * @param model the model to populate with the profile data
+     * @return the recruiter profile page template
+     */
     @GetMapping("/")
     public String recruiterProfile(Model model){
 
@@ -74,6 +81,15 @@ public class RecruiterProfileController {
     }
 
 
+    /**
+     * Handles POST requests for adding or updating a recruiter profile.
+     * Sets the user ID, saves the profile photo, and redirects to the dashboard.
+     *
+     * @param recruiterProfile the recruiter profile to add or update
+     * @param multipartFile the profile photo file
+     * @param model the model to populate with the profile data
+     * @return the redirect URL to the dashboard
+     */
     @PostMapping("/addNew")
     public String addNew(RecruiterProfile recruiterProfile, @RequestParam("image")MultipartFile multipartFile, Model model){
 

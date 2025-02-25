@@ -15,16 +15,13 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 /**
- * The `CustomAuthenticationSuccessHandler` class handles successful authentication events.
- * It implements the `AuthenticationSuccessHandler` interface to define custom behavior upon successful login.
+ * The `CustomAuthenticationSuccessHandler` class implements the `AuthenticationSuccessHandler` interface to handle the successful authentication event.
  *
  * Purpose:
- * - To handle actions that should be taken when a user successfully logs in.
+ * - To handle the successful authentication event.
  *
  * Key Functionalities:
- * - `onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)`:
- *   This method is called when a user successfully logs in. It retrieves the username and roles of the authenticated user
- *   and redirects them to the appropriate dashboard based on their role.
+ * - `onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)`: Handles the successful authentication event.
  */
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -33,6 +30,15 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     @Lazy
     private UsersService usersService;
 
+    /**
+     * Handles the successful authentication event.
+     *
+     * @param request        the HTTP request
+     * @param response       the HTTP response
+     * @param authentication the authentication object containing the user's details
+     * @throws IOException      if an I/O error occurs
+     * @throws ServletException if a servlet exception occurs
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
@@ -48,12 +54,19 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
         Users user = usersService.findByEmail(username);
 
-        // Controleer of de gebruiker een Job Seeker is en of de session attribuut "firstTimeLogin" aanwezig is
-        Boolean isFirstLogin = (Boolean) request.getSession().getAttribute("firstTimeLogin");
+        // Check if the user is a Job Seeker and if the session attribute "firstTimeLoginJobSeeker" is present
+        Boolean isFirstLoginJobSeeker = (Boolean) request.getSession().getAttribute("firstTimeLoginJobSeeker");
+        Boolean isFirstLoginRecruiter = (Boolean) request.getSession().getAttribute("firstTimeLoginRecruiter");
 
-        if (hasJobSeekerRole && Boolean.TRUE.equals(isFirstLogin)) {
-            request.getSession().removeAttribute("firstTimeLogin"); // Verwijder de session attribuut
-            response.sendRedirect("/job-seeker-profile/"); // Stuur gebruiker naar profielpagina
+        if (hasJobSeekerRole && Boolean.TRUE.equals(isFirstLoginJobSeeker)) {
+            request.getSession().removeAttribute("firstTimeLoginJobSeeker");
+            response.sendRedirect("/job-seeker-profile/");
+            return;
+        }
+
+        if (hasRecruiterRole && Boolean.TRUE.equals(isFirstLoginRecruiter)) {
+            request.getSession().removeAttribute("firstTimeLoginRecruiter"); // Verwijder session-attribuut
+            response.sendRedirect("/recruiter-profile/"); // Stuur naar profielpagina voor Recruiters
             return;
         }
 
