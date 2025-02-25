@@ -40,6 +40,7 @@ public class Users {
 
     private boolean isActive;
 
+
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date registrationDate;
 
@@ -51,16 +52,16 @@ public class Users {
     public Users() {
     }
 
-/**
- * Constructs a new Users object with the specified details.
- *
- * @param userId the unique identifier for the user
- * @param email the email address of the user, which must be unique
- * @param password the password for the user's account
- * @param isActive indicates whether the user's account is active
- * @param registrationDate the date when the user registered
- * @param userTypeId the type of user, represented by a foreign key to the UsersType entity
- */
+    /**
+     * Constructs a new Users object with the specified details.
+     *
+     * @param userId           the unique identifier for the user
+     * @param email            the email address of the user, which must be unique
+     * @param password         the password for the user's account
+     * @param isActive         indicates whether the user's account is active
+     * @param registrationDate the date when the user registered
+     * @param userTypeId       the type of user, represented by a foreign key to the UsersType entity
+     */
     public Users(int userId, String email, String password, boolean isActive, Date registrationDate, UsersType userTypeId) {
         this.userId = userId;
         this.email = email;
@@ -119,6 +120,7 @@ public class Users {
         this.userTypeId = userTypeId;
     }
 
+
     @Override
     public String toString() {
         return "Users{" +
@@ -130,3 +132,4 @@ public class Users {
                 '}';
     }
 }
+

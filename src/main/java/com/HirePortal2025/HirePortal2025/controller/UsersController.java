@@ -4,6 +4,7 @@ import com.HirePortal2025.HirePortal2025.entity.Users;
 import com.HirePortal2025.HirePortal2025.entity.UsersType;
 import com.HirePortal2025.HirePortal2025.services.UsersService;
 import com.HirePortal2025.HirePortal2025.services.UsersTypeService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -77,7 +78,7 @@ public class UsersController {
      * @return the dashboard page
      */
     @PostMapping("/register/new")
-    public String userRegistration(@Valid Users users, Model model) {
+    public String userRegistration(@Valid Users users, Model model, HttpServletRequest request) {
 
         if (usersService.getUserByEmail(users.getEmail()).isPresent()) {
             model.addAttribute("error", "Email already registered, try to login or register with another email.");
@@ -85,8 +86,11 @@ public class UsersController {
             model.addAttribute("user", new Users());
             return "register";
         }
+
         usersService.addNew(users);
-        return "redirect:/dashboard/";
+        request.getSession().setAttribute("firstTimeLogin", true); // Zet een session attribuut
+
+        return "redirect:/login"; // Stuur gebruiker naar login pagina
     }
 
     /**
