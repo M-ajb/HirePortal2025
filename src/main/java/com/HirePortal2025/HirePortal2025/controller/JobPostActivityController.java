@@ -324,4 +324,10 @@ public class JobPostActivityController {
         model.addAttribute("jobPost", jobPost);
         return "global-search";
     }
+
+    @PostMapping("dashboard/deleteJob/{id}")
+    public String deleteJob(@PathVariable("id") int id, Model model) {
+        jobPostActivityService.deleteById(id);
+        return "redirect:/dashboard/";
+    }
 }

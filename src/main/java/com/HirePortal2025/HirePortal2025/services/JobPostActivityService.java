@@ -2,8 +2,12 @@ package com.HirePortal2025.HirePortal2025.services;
 
 import com.HirePortal2025.HirePortal2025.entity.*;
 import com.HirePortal2025.HirePortal2025.repository.JobPostActivityRepository;
+import com.HirePortal2025.HirePortal2025.repository.JobSeekerApplyRepository;
+import com.HirePortal2025.HirePortal2025.repository.JobSeekerSaveRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -30,6 +34,8 @@ import java.util.Objects;
 public class JobPostActivityService {
 
     private final JobPostActivityRepository jobPostActivityRepository;
+    private final JobSeekerApplyRepository jobSeekerApplyRepository;
+    private final JobSeekerSaveRepository jobSeekerSaveRepository;
 
     /**
      * Constructs a new `JobPostActivityService` with the specified repository.
@@ -37,8 +43,11 @@ public class JobPostActivityService {
      * @param jobPostActivityRepository the repository for performing CRUD operations on `JobPostActivity` entities
      */
     @Autowired
-    public JobPostActivityService(JobPostActivityRepository jobPostActivityRepository) {
+    public JobPostActivityService(JobPostActivityRepository jobPostActivityRepository, JobSeekerApplyRepository jobSeekerApplyRepository,
+                                  JobSeekerSaveRepository jobSeekerSaveRepository) {
         this.jobPostActivityRepository = jobPostActivityRepository;
+        this.jobSeekerApplyRepository = jobSeekerApplyRepository;
+        this.jobSeekerSaveRepository = jobSeekerSaveRepository;
     }
 
     public JobPostActivity addNew(JobPostActivity jobPostActivity){
@@ -81,4 +90,22 @@ public class JobPostActivityService {
         return Objects.isNull(searchDate)? jobPostActivityRepository.searchWithoutDate(job,location, remote, type):
                 jobPostActivityRepository.search(job, location, remote, type, searchDate);
     }
+
+
+    @Transactional
+    public void deleteById(int id) {
+        JobPostActivity jobPost = jobPostActivityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Job post not found"));
+
+        // Stap 1: Verwijder eerst alle sollicitaties voor deze job
+        jobSeekerApplyRepository.deleteByJob(jobPost);
+
+        // Stap 2: Verwijder opgeslagen vacatures voor deze job
+        jobSeekerSaveRepository.deleteByJob(jobPost);
+
+        // Stap 3: Nu pas de vacature verwijderen
+        jobPostActivityRepository.deleteById(id);
+    }
+
+
 }

@@ -4,7 +4,10 @@ import com.HirePortal2025.HirePortal2025.entity.JobPostActivity;
 import com.HirePortal2025.HirePortal2025.entity.JobSeekerProfile;
 import com.HirePortal2025.HirePortal2025.entity.JobSeekerSave;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,4 +36,9 @@ public interface JobSeekerSaveRepository extends JpaRepository<JobSeekerSave , I
 
 
      List<JobSeekerSave> findByJob(JobPostActivity job);
+
+     @Modifying
+     @Transactional
+     @Query("DELETE FROM JobSeekerSave j WHERE j.job = :job")
+     void deleteByJob(JobPostActivity job);
 }

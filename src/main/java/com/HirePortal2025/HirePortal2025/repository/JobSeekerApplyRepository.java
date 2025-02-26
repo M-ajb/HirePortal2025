@@ -3,8 +3,12 @@ package com.HirePortal2025.HirePortal2025.repository;
 import com.HirePortal2025.HirePortal2025.entity.JobPostActivity;
 import com.HirePortal2025.HirePortal2025.entity.JobSeekerApply;
 import com.HirePortal2025.HirePortal2025.entity.JobSeekerProfile;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,5 +35,11 @@ public interface JobSeekerApplyRepository extends JpaRepository<JobSeekerApply, 
     List<JobSeekerApply> findByUserId(JobSeekerProfile userId);
 
     List<JobSeekerApply> findByJob(JobPostActivity job);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM JobSeekerApply j WHERE j.job = :job")
+    void deleteByJob(JobPostActivity job);
+
 
 }

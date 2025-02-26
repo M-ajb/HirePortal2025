@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * The `JobPostActivity` class represents a job post activity in the HirePortal2025 application.
@@ -44,11 +45,11 @@ public class JobPostActivity {
     private Users postedById;
 
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "jobLocationId" , referencedColumnName = "Id")
     private JobLocation jobLocationId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "jobCompanyId", referencedColumnName = "Id")
     private JobCompany jobCompanyId;
 
@@ -68,6 +69,12 @@ public class JobPostActivity {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private Date postedDate;
     private String jobTitle;
+
+
+
+
+
+
 
     public JobPostActivity() {
     }
