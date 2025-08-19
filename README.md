@@ -16,7 +16,7 @@ De beginscherm van de applicatie, waar zowel recruiters als jobseekers kunnen in
 ### 2. 👤 Profiel aanmaken (Job Seeker)
 ![9AB09E35-A91C-4D8F-9B0A-A539DAF254D5.jpeg](screenshots%2F9AB09E35-A91C-4D8F-9B0A-A539DAF254D5.jpeg)
 
-Nadat een jobseeker zich registreert, wordt hij doorgestuurd naar deze pagina om zijn/haar gegevens, profielfoto en cv te uploaden.
+Nadat een jobseeker zich registreert, wordt hij doorgestuurd naar deze pagina om zijn/haar gegevens, profielfoto en cv te uploaden
 
 ---
 
