@@ -7,35 +7,35 @@ Een full-stack vacatureplatform gebouwd met **Spring Boot**, waarmee werkzoekend
 ## 📸 Screenshots
 
 ### 1. 🔐 Startpagina & Inlog/Registratie
-<img src="photos/screenshots/852ECAF5-1202-478F-83B4-0BA6057898CC.jpeg" alt="Startpagina" width="600"/>
+![B52EACF5-12D2-478F-B394-D8A065789BCC.jpeg](screenshots%2FB52EACF5-12D2-478F-B394-D8A065789BCC.jpeg)
 
 De beginscherm van de applicatie, waar zowel recruiters als jobseekers kunnen inloggen of registreren.
 
 ---
 
 ### 2. 👤 Profiel aanmaken (Job Seeker)
-<img src="photos/screenshots/9AB09E53-A91C-4DBF-89A0-A535DAF254D5.jpeg" alt="Profiel aanmaken" width="600"/>
+![9AB09E35-A91C-4D8F-9B0A-A539DAF254D5.jpeg](screenshots%2F9AB09E35-A91C-4D8F-9B0A-A539DAF254D5.jpeg)
 
 Nadat een jobseeker zich registreert, wordt hij doorgestuurd naar deze pagina om zijn/haar gegevens, profielfoto en cv te uploaden.
 
 ---
 
 ### 3. 📄 Nieuwe vacature plaatsen (Recruiter)
-<img src="photos/screenshots/6832C193-A74E-401B-84DA-3079F31296C8.jpeg" alt="Vacature aanmaken" width="600"/>
+![6E32C193-A74E-4018-84DA-3079F31269CB.jpeg](screenshots%2F6E32C193-A74E-4018-84DA-3079F31269CB.jpeg)
 
 Recruiters kunnen hier een nieuwe vacature aanmaken met details zoals functietitel, locatie, beschrijving en salaris.
 
 ---
 
 ### 4. 📋 Vacature weergave (Recruiter)
-<img src="photos/screenshots/9B0B706E-4E3F-4186-8C05-CC9061829838.jpeg" alt="Vacature weergave recruiter" width="600"/>
+![9DBB706E-4E3F-41B6-8C05-CC9061828938.jpeg](screenshots%2F9DBB706E-4E3F-41B6-8C05-CC9061828938.jpeg)
 
 De recruiter ziet hier de geplaatste vacature met volledige beschrijving, en heeft opties om de vacature te bewerken of te verwijderen.
 
 ---
 
 ### 5. 🧑‍💼 Vacature bekijken & solliciteren (Job Seeker)
-<img src="photos/screenshots/60C04CFE-82A2-483C-BA1B-0F8745D4EAB3.jpeg" alt="Vacature bekijken jobseeker" width="600"/>
+![60C04CFE-882A-43BC-BA1B-0F8745D4EAB3.jpeg](screenshots%2F60C04CFE-882A-43BC-BA1B-0F8745D4EAB3.jpeg)
 
 De jobseeker kan de vacature bekijken, solliciteren op de functie of deze opslaan voor later.
 
