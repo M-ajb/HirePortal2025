@@ -23,7 +23,7 @@ Nadat een jobseeker zich registreert, wordt hij doorgestuurd naar deze pagina om
 ### 3. 📄 Nieuwe vacature plaatsen (Recruiter)
 ![6E32C193-A74E-4018-84DA-3079F31269CB.jpeg](screenshots%2F6E32C193-A74E-4018-84DA-3079F31269CB.jpeg)
 
-Recruiters kunnen hier een nieuwe vacature aanmaken met details zoals functietitel, locatie, beschrijving en salaris.
+Recruiters kunnen hier een nieuwe vacature aanmaken met details zoals functietitel, locatie, beschrijving en salaris
 
 ---
 
